@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Valorant マクロ問題チャレンジ</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    .container { background: #fff; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .question { font-size: 18px; margin-bottom: 20px; }
+    .choice { background: #eee; padding: 10px; border-radius: 5px; margin-bottom: 10px; cursor: pointer; }
+    .choice:hover { background: #ddd; }
+    .result { font-size: 20px; margin-top: 20px; font-weight: bold; }
+    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="quiz">
+      <div class="question" id="question">読み込み中...</div>
+      <div id="choices"></div>
+      <div class="result" id="result"></div>
+      <button onclick="nextQuestion()">次の問題へ</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "アセント攻め側。敵オペレーターがミッドマーケットにいると判明。取るべき行動は？",
+        choices: [
+          "ミッドを無理に取りに行く",
+          "Aメインから圧をかける",
+          "ミッドをスモークしてマーケットを取る",
+          "ディフェンダースポーンに突っ込む"
+        ],
+        correct: 2
+      },
+      {
+        question: "バインド守り。Bロングラッシュを止めきれていない。取るべき行動は？",
+        choices: [
+          "Bロングに2人以上でプッシュする",
+          "Bサイト守りを厚くしCTリテイク準備",
+          "Bサイトを捨ててリテイク構成にする",
+          "Aサイトに寄る"
+        ],
+        correct: 0
+      }
+    ];
+
+    let current = 0;
+
+    function loadQuestion() {
+      document.getElementById('result').textContent = '';
+      const q = questions[current];
+      document.getElementById('question').textContent = q.question;
+      const choicesDiv = document.getElementById('choices');
+      choicesDiv.innerHTML = '';
+      q.choices.forEach((choice, index) => {
+        const div = document.createElement('div');
+        div.className = 'choice';
+        div.textContent = choice;
+        div.onclick = () => checkAnswer(index);
+        choicesDiv.appendChild(div);
+      });
+    }
+
+    function checkAnswer(index) {
+      const q = questions[current];
+      if (index === q.correct) {
+        document.getElementById('result').textContent = '正解！🎯';
+        document.getElementById('result').style.color = 'green';
+      } else {
+        document.getElementById('result').textContent = '不正解…💥';
+        document.getElementById('result').style.color = 'red';
+      }
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        loadQuestion();
+      } else {
+        document.getElementById('quiz').innerHTML = '<h2>全問終了！</h2>';
+      }
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
